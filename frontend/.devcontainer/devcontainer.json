@@ -1,0 +1,22 @@
+{
+  "name": "Monad NFT Swap Dev",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "streetsidesoftware.code-spell-checker"
+      ]
+    }
+  },
+  "postCreateCommand": "npm install",
+  "portsAttributes": {
+    "5173": { "label": "Vite", "onAutoForward": "openBrowser" }
+  },
+  "forwardPorts": [5173],
+  "remoteUser": "node"
+}
