@@ -3,11 +3,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export default function Swap(): JSX.Element {
-  // placeholder pending count - replace with actual data later
   const pendingCount = 0;
 
   return (
     <div className="swap-page">
+      {/* HERO */}
       <div className="swap-hero">
         <div className="swap-hero-inner">
           <h2 className="site-title">Monad NFT Swap</h2>
@@ -15,7 +15,9 @@ export default function Swap(): JSX.Element {
         </div>
       </div>
 
+      {/* BODY */}
       <div className="swap-content container">
+        {/* LEFT MENU */}
         <aside className="left-menu" aria-label="left navigation">
           <nav>
             <ul>
@@ -38,12 +40,7 @@ export default function Swap(): JSX.Element {
                 </Link>
               </li>
               <li>
-                <a
-                  className="pill"
-                  href="https://discord.gg/"
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <a className="pill" href="https://discord.gg/" target="_blank" rel="noreferrer">
                   <span className="pill-icon">💬</span>
                   <span>Join our Discord</span>
                 </a>
@@ -52,14 +49,16 @@ export default function Swap(): JSX.Element {
           </nav>
         </aside>
 
+        {/* RIGHT PANEL */}
         <section className="right-panel">
           <div className="pending-row">
             <div className="pending-text">You have {pendingCount} pending swaps.</div>
 
             <div className="cta-wrap">
-              <button className="cta-primary" onClick={() => { /* open modal later */ }}>
+              {/* Navigate to the NEW SWAP page */}
+              <Link to="/swap/new" className="cta-primary inline-flex items-center justify-center">
                 INITIATE NEW SWAP
-              </button>
+              </Link>
 
               <button className="cta-secondary" disabled>
                 VIEW PENDING SWAPS
