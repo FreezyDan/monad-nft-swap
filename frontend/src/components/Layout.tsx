@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       {/* Header */}
       <header className="relative bg-fox-gradient shadow-lg">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center">
-          {/* left area for nav (keeps spacing even) */}
+          {/* left area (keeps spacing even) */}
           <div className="flex-1 flex items-center gap-4">
             <Link to="/" className="hidden md:inline text-sm text-white/80 hover:underline">
               Home
@@ -22,18 +22,20 @@ export default function Layout({ children }: { children: ReactNode }) {
           </div>
         </div>
 
-        {/* Absolutely centered title (always centered regardless of left/right width) */}
+        {/* center title */}
         <div className="pointer-events-none absolute left-0 right-0 top-1/2 -translate-y-1/2 flex justify-center">
           <Link to="/" className="pointer-events-auto text-center">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-wider text-fox-accent drop-shadow-md">
               Monad NFT Swap
             </h1>
-            <p className="mt-1 text-xs sm:text-sm text-white/70">Safe 1↔1 NFT swaps · Monad Testnet</p>
+            <p className="mt-1 text-xs sm:text-sm text-white/70">
+              Safe 1↔1 NFT swaps · Monad Testnet
+            </p>
           </Link>
         </div>
       </header>
 
-      {/* Main content (centered wrappers inside pages will handle vertical centering) */}
+      {/* Main */}
       <main className="flex-1">
         <div className="max-w-6xl mx-auto px-4 py-8">{children}</div>
       </main>
