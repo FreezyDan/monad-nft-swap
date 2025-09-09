@@ -1,38 +1,29 @@
 // src/wagmi.ts
 // Minimal, robust RainbowKit + wagmi config for Monad Testnet.
-// Uses getDefaultConfig from @rainbow-me/rainbowkit so projectId is passed correctly.
 
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 
-/**
- * Monad Testnet chain object (you said chain id is 10143).
- * Keep this shape simple and compatible with RainbowKit / wagmi.
- */
+// Define your Monad Testnet chain
 export const monadTestnet = {
   id: 10143,
   name: "Monad Testnet",
   network: "monad-testnet",
+  nativeCurrency: { name: "Monad", symbol: "MON", decimals: 18 },
   rpcUrls: {
     default: { http: ["https://testnet-rpc.monad.xyz"] },
+    public: { http: ["https://testnet-rpc.monad.xyz"] },
   },
-  nativeCurrency: {
-    name: "Monad",
-    symbol: "MON",
-    decimals: 18,
-  },
-};
+} as const;
 
 export const chains = [monadTestnet];
 
-// Your WalletConnect / projectId value (the one you shared)
+// WalletConnect projectId (keep as your value)
 const projectId = "1a48c1fba807d453358b1c1562a93050";
 
-/**
- * getDefaultConfig builds a wagmi config object and RainbowKit connectors for you.
- * Export wagmiConfig and chains for use in main.tsx.
- */
+// RainbowKit v2 helper returns a wagmi config you can pass directly to WagmiConfig
 export const wagmiConfig = getDefaultConfig({
   appName: "Monad NFT Swap",
   projectId,
   chains,
+  ssr: false, // set true only if you’re actually doing SSR
 });
