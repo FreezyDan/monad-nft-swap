@@ -1,7 +1,8 @@
 // src/App.tsx
 import React from "react";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
 import Layout from "./components/Layout";
+
 import Home from "./pages/Home";
 import Swap from "./pages/Swap";
 import SwapHistory from "./pages/SwapHistory";
@@ -10,25 +11,16 @@ import VerifiedCollections from "./pages/VerifiedCollections";
 export default function App(): JSX.Element {
   return (
     <BrowserRouter>
-      {/* Use Layout so the header + ConnectButton shows on all pages */}
+      {/* Layout renders the fixed top-right Connect button */}
       <Layout>
-        {/* your page nav */}
+        {/* Page-level nav (kept inside main so it doesn't affect header positioning) */}
         <nav className="flex gap-4 justify-center mb-6">
-          <Link to="/" className="px-4 py-2 rounded-md bg-foxPurple/60">
-            Home
-          </Link>
-          <Link to="/swap" className="px-4 py-2 rounded-md bg-foxPurple/60">
-            Swap
-          </Link>
-          <Link to="/verified" className="px-4 py-2 rounded-md bg-foxPurple/60">
-            Verified
-          </Link>
-          <Link to="/history" className="px-4 py-2 rounded-md bg-foxPurple/60">
-            History
-          </Link>
+          <NavLink to="/" className="px-4 py-2 rounded-md bg-foxPurple/60">Home</NavLink>
+          <NavLink to="/swap" className="px-4 py-2 rounded-md bg-foxPurple/60">Swap</NavLink>
+          <NavLink to="/verified" className="px-4 py-2 rounded-md bg-foxPurple/60">Verified</NavLink>
+          <NavLink to="/history" className="px-4 py-2 rounded-md bg-foxPurple/60">History</NavLink>
         </nav>
 
-        {/* routes */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/swap" element={<Swap />} />

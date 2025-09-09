@@ -6,23 +6,33 @@ import { Link } from "react-router-dom";
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col bg-fox-bg text-white">
+      {/* Fixed top-right Connect button (independent of header/flex) */}
+      <div
+        style={{
+          position: "fixed",
+          top: 16,
+          right: 16,
+          zIndex: 9999,
+          pointerEvents: "auto",
+        }}
+      >
+        <ConnectButton chainStatus="icon" accountStatus="avatar" showBalance={false} />
+      </div>
+
       {/* Header */}
-      <header className="relative bg-fox-gradient shadow-lg">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center">
-          {/* left area (keeps spacing even) */}
+      <header className="relative bg-fox-gradient shadow-lg pt-16 md:pt-20">
+        <div className="max-w-6xl mx-auto px-4 pb-4 flex items-center">
+          {/* left spacer / optional link */}
           <div className="flex-1 flex items-center gap-4">
             <Link to="/" className="hidden md:inline text-sm text-white/80 hover:underline">
               Home
             </Link>
           </div>
-
-          {/* right area: connect button */}
-          <div className="flex-1 flex justify-end">
-            <ConnectButton chainStatus="icon" accountStatus="avatar" showBalance={false} />
-          </div>
+          {/* right spacer (visual balance only; button itself is fixed) */}
+          <div className="flex-1" />
         </div>
 
-        {/* center title */}
+        {/* centered title */}
         <div className="pointer-events-none absolute left-0 right-0 top-1/2 -translate-y-1/2 flex justify-center">
           <Link to="/" className="pointer-events-auto text-center">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-wider text-fox-accent drop-shadow-md">
