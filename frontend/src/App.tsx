@@ -6,6 +6,7 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import Swap from "./pages/Swap";
 import NewSwap from "./pages/NewSwap";
+import SelectNFT from "./pages/SelectNFT";
 import SwapHistory from "./pages/SwapHistory";
 import VerifiedCollections from "./pages/VerifiedCollections";
 
@@ -17,6 +18,7 @@ export default function App(): JSX.Element {
           <Route path="/" element={<Home />} />
           <Route path="/swap" element={<Swap />} />
           <Route path="/swap/new" element={<NewSwap />} />
+          <Route path="/swap/select" element={<SelectNFT />} />
           <Route path="/verified" element={<VerifiedCollections />} />
           <Route path="/history" element={<SwapHistory />} />
         </Routes>
