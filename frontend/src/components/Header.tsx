@@ -1,115 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 /**
- * Simple Connect Wallet button using window.ethereum (MetaMask).
- * - Shows "Connect Wallet" when not connected.
- * - Shows truncated address when connected (e.g. 0x12...C17b).
- * - Listens for account changes and disconnect.
- *
- * Note: This intentionally does NOT use wagmi/rainbowkit to avoid touching wagmi.ts.
+ * Header for Monad NFT Swap.
+ * Positions the wallet connect button at the top-right,
+ * while centering the app title and subtitle beneath.
  */
-
-function truncateAddress(addr: string) {
-  if (!addr) return "";
-  // show "0x" + first 4 hex chars then ... last 4 chars
-  const prefix = addr.slice(0, 6); // "0x" + 4 chars
-  const suffix = addr.slice(-4);
-  return `${prefix}...${suffix}`;
-}
-
-export default function ConnectWalletButton(): JSX.Element {
-  const [account, setAccount] = useState<string | null>(null);
-  const [isConnecting, setIsConnecting] = useState(false);
-
-  useEffect(() => {
-    // If site loaded and wallet already connected, read selectedAddress if available
-    const eth = (window as any).ethereum;
-    if (eth?.selectedAddress) {
-      setAccount(eth.selectedAddress);
-    }
-
-    // Handler for account changes
-    const handleAccountsChanged = (accounts: Array<string> | string) => {
-      // EIP-1193: accounts is an array
-      if (Array.isArray(accounts)) {
-        if (accounts.length === 0) {
-          setAccount(null);
-        } else {
-          setAccount(accounts[0]);
-        }
-      } else if (typeof accounts === "string") {
-        setAccount(accounts || null);
-      } else {
-        setAccount(null);
-      }
-    };
-
-    // Listen for account changes
-    if (eth?.on) {
-      eth.on("accountsChanged", handleAccountsChanged);
-      eth.on("disconnect", () => setAccount(null));
-    }
-
-    // cleanup
-    return () => {
-      if (eth?.removeListener) {
-        eth.removeListener("accountsChanged", handleAccountsChanged);
-        eth.removeListener("disconnect", () => setAccount(null));
-      }
-    };
-  }, []);
-
-  const connect = async () => {
-    const eth = (window as any).ethereum;
-    if (!eth) {
-      // No injected provider
-      // open metamask page in new tab
-      window.open("https://metamask.io/download/", "_blank");
-      return;
-    }
-
-    try {
-      setIsConnecting(true);
-      // Request accounts
-      const accounts: string[] = await eth.request({ method: "eth_requestAccounts" });
-      if (Array.isArray(accounts) && accounts[0]) {
-        setAccount(accounts[0]);
-      }
-    } catch (err) {
-      // user rejected or other error
-      console.error("Wallet connect error:", err);
-    } finally {
-      setIsConnecting(false);
-    }
-  };
-
-  const disconnect = () => {
-    // There is no standard programmatic disconnect for injected wallets.
-    // Clearing local UI state to "disconnect" view.
-    setAccount(null);
-  };
-
+export default function Header(): JSX.Element {
   return (
-    <>
-      {account ? (
-        <button
-          className="connect-btn connected"
-          onClick={disconnect}
-          title={account}
-          aria-label="Connected wallet; click to disconnect"
-        >
-          {truncateAddress(account)}
-        </button>
-      ) : (
-        <button
-          className="connect-btn"
-          onClick={connect}
-          disabled={isConnecting}
-          aria-label="Connect wallet"
-        >
-          {isConnecting ? "Connecting..." : "Connect Wallet"}
-        </button>
-      )}
-    </>
+    <header className="app-header">
+      <div className="header-inner">
+        <div className="header-left" />
+        <div className="header-center">
+          <h1 className="site-title">Monad NFT Swap</h1>
+          <div className="site-sub">
+            Swap 1 to 1 with whitelisted verified collections
+          </div>
+        </div>
+        <div className="header-right">
+          {/* Wallet connection button (RainbowKit) */}
+          <ConnectButton
+            chainStatus="none"
+            showBalance={false}
+            accountStatus={{
+              smallScreen: "avatar",
+              largeScreen: "full",
+            }}
+          />
+        </div>
+      </div>
+    </header>
   );
 }
