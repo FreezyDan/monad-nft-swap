@@ -3,10 +3,12 @@ import type { CollectionCfg } from "../lib/nft";
 
 /**
  * Verified Monad ERC-721 (Enumerable) collections.
- * NOTE: If any collection here is NOT ERC721Enumerable, on-chain enumeration
- *       won’t work without an indexer. We’ll just skip those gracefully.
+ * NOTE: Collections that don't implement ERC721Enumerable won't enumerate
+ *       via tokenOfOwnerByIndex; our fetch skips those gracefully.
  */
 export const VERIFIED_COLLECTIONS: CollectionCfg[] = [
+  // Newly added:
+  { address: "0xc0033008569DA98Dd289A54c8617133fAB842034" as `0x${string}`, label: "Bunad" },
   { address: "0xE6B5427b174344fd5CB1e3d5550306B0055473C6" as `0x${string}`, label: "Chogs Mystery Chest" },
   { address: "0xD20EF03E432208af083C0fb4e401049F4F29949F" as `0x${string}`, label: "Lil Chogstars Superstarlist Pass" },
   { address: "0xE8F0635591190Fb626F9D13C49b60626561Ed145" as `0x${string}`, label: "Skrumpets" },
