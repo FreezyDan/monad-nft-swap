@@ -6,14 +6,14 @@ import { ERC721_ENUMERABLE_ABI } from "../abi/erc721";
 export type NFTItem = {
   contract: Address;
   tokenId: string;
-  name: string;          // "#1234" or from metadata/name
-  image: string;         // resolved URL (handles ipfs://)
+  name: string;
+  image: string;
   collectionName: string;
 };
 
 export type CollectionCfg = {
   address: Address;
-  label?: string; // pretty name override
+  label?: string;
 };
 
 function ipfsToHttp(u: string): string {
@@ -22,10 +22,6 @@ function ipfsToHttp(u: string): string {
   return u;
 }
 
-/**
- * Read ALL ERC721Enumerable tokens an address owns for a given collection.
- * Hard-caps per-collection items to avoid freezing the UI on giant wallets.
- */
 export async function fetchNftsForCollection(
   owner: Address,
   collection: CollectionCfg,
@@ -40,11 +36,13 @@ export async function fetchNftsForCollection(
         functionName: "balanceOf",
         args: [owner],
       }) as Promise<bigint>,
-      monadClient.readContract({
-        address: contract,
-        abi: ERC721_ENUMERABLE_ABI,
-        functionName: "name",
-      }).catch(() => collection.label || "Collection"),
+      monadClient
+        .readContract({
+          address: contract,
+          abi: ERC721_ENUMERABLE_ABI,
+          functionName: "name",
+        })
+        .catch(() => collection.label || "Collection"),
     ]);
 
     const balance = Number(rawBal);
@@ -54,7 +52,6 @@ export async function fetchNftsForCollection(
     const items: NFTItem[] = [];
 
     for (let i = 0; i < count; i++) {
-      // tokenOfOwnerByIndex may throw if not exactly ERC721Enumerable; guard it.
       const tokenId = await monadClient
         .readContract({
           address: contract,
@@ -76,7 +73,7 @@ export async function fetchNftsForCollection(
         .catch(() => "")) as string;
 
       let img = "";
-      let displayName = `#${tokenId.toString()}`;
+      let displayName = `#${(tokenId as bigint).toString()}`;
 
       if (rawUri) {
         const uri = ipfsToHttp(rawUri);
@@ -88,7 +85,7 @@ export async function fetchNftsForCollection(
             displayName = meta.name || displayName;
           }
         } catch {
-          // ignore metadata fetch errors, keep defaults
+          // ignore metadata fetch errors
         }
       }
 
@@ -107,9 +104,6 @@ export async function fetchNftsForCollection(
   }
 }
 
-/**
- * Fetch NFTs across a set of verified collections.
- */
 export async function fetchNftsForAddress(
   owner: Address,
   collections: CollectionCfg[],

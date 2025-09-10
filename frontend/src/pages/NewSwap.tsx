@@ -6,6 +6,7 @@ export default function NewSwap(): JSX.Element {
   const [counterparty, setCounterparty] = useState("");
   const navigate = useNavigate();
 
+  // very light validation: 0x-address, @twitter, or *.mon (address required for live fetch)
   const isValid = useMemo(() => {
     const v = counterparty.trim();
     const isEthAddress = /^0x[a-fA-F0-9]{40}$/.test(v);
@@ -14,18 +15,29 @@ export default function NewSwap(): JSX.Element {
     return isEthAddress || isTwitter || isMonDomain;
   }, [counterparty]);
 
+  function handleLoadNfts() {
+    navigate(`/swap/select?addr=${encodeURIComponent(counterparty.trim())}`);
+  }
+
+  // keep your palette
   const ORANGE = "#FF8A2B";
   const DISABLED_GRADIENT =
     "linear-gradient(180deg, rgba(34,24,32,1) 0%, rgba(21,14,20,1) 100%)";
   const CARD_GRADIENT = "linear-gradient(180deg,#2b0f2f 0%, #170a1b 100%)";
 
-  function handleLoadNfts() {
-    // Navigate to the select page; we pass the raw input in the URL for now.
-    navigate(`/swap/select?addr=${encodeURIComponent(counterparty.trim())}`);
-  }
+  // inline styles to guarantee centering
+  const pageSection: React.CSSProperties = { padding: "40px 16px" };
+  const cardWrap: React.CSSProperties = { maxWidth: 560, width: "100%", margin: "0 auto" };
+  const card: React.CSSProperties = {
+    background: CARD_GRADIENT,
+    borderRadius: 28,
+    padding: 32,
+    boxShadow: "0 30px 80px rgba(0,0,0,0.4)",
+  };
 
   return (
     <div className="swap-page">
+      {/* Hero (uses your global styles) */}
       <div className="swap-hero">
         <div className="swap-hero-inner" style={{ textAlign: "center" }}>
           <h2 className="site-title">Start a New Swap</h2>
@@ -33,16 +45,10 @@ export default function NewSwap(): JSX.Element {
         </div>
       </div>
 
-      <section style={{ padding: "40px 16px" }}>
-        <div style={{ maxWidth: 560, width: "100%", margin: "0 auto" }}>
-          <div
-            style={{
-              background: CARD_GRADIENT,
-              borderRadius: 28,
-              padding: 32,
-              boxShadow: "0 30px 80px rgba(0,0,0,0.4)",
-            }}
-          >
+      {/* Centered narrow card */}
+      <section style={pageSection}>
+        <div style={cardWrap}>
+          <div style={card}>
             <h3
               style={{
                 textAlign: "center",
@@ -95,17 +101,38 @@ export default function NewSwap(): JSX.Element {
               />
 
               {isValid ? (
-                <button onClick={handleLoadNfts} className="cta-primary" style={{ height: 80, borderRadius: 40, fontSize: 22, fontWeight: 800 }}>
+                <button
+                  onClick={handleLoadNfts}
+                  className="cta-primary"
+                  style={{ height: 80, borderRadius: 40, fontSize: 22, fontWeight: 800 }}
+                >
                   Load NFTs
                 </button>
               ) : (
-                <button disabled style={{ height: 80, borderRadius: 40, fontSize: 22, fontWeight: 800, background: DISABLED_GRADIENT, color: "rgba(255,255,255,0.55)", boxShadow: "0 18px 26px rgba(0,0,0,0.55), 0 8px 0 rgba(0,0,0,0.45)", border: "1px solid rgba(255,255,255,0.06)", cursor: "not-allowed" }}>
+                <button
+                  disabled
+                  style={{
+                    height: 80,
+                    borderRadius: 40,
+                    fontSize: 22,
+                    fontWeight: 800,
+                    background: DISABLED_GRADIENT,
+                    color: "rgba(255,255,255,0.55)",
+                    boxShadow: "0 18px 26px rgba(0,0,0,0.55), 0 8px 0 rgba(0,0,0,0.45)",
+                    border: "1px solid rgba(255,255,255,0.06)",
+                    cursor: "not-allowed",
+                  }}
+                >
                   Load NFTs
                 </button>
               )}
 
               <div style={{ display: "flex", justifyContent: "center" }}>
-                <Link to="/swap" className="cta-secondary" style={{ textDecoration: "none", height: 56, borderRadius: 28, padding: "0 24px", fontSize: "1.05rem", fontWeight: 800 }}>
+                <Link
+                  to="/swap"
+                  className="cta-secondary"
+                  style={{ textDecoration: "none", height: 56, borderRadius: 28, padding: "0 24px", fontSize: "1.05rem", fontWeight: 800 }}
+                >
                   {"\u2190"} Back to Swap
                 </Link>
               </div>

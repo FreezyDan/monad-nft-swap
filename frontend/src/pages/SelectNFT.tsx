@@ -9,13 +9,11 @@ function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-// Super-simple resolver: if it looks like 0x.., return as-is.
-// Otherwise you can plug in a .mon / @twitter -> address resolver here.
+// Simple address resolver (0x...). Hook your .mon / @twitter resolver later.
 function resolveInputToAddress(raw: string): string | null {
   const v = raw.trim();
   const isHex = /^0x[a-fA-F0-9]{40}$/.test(v);
   if (isHex) return v;
-  // TODO: integrate real resolver for .mon or @twitter
   return null;
 }
 
@@ -57,11 +55,6 @@ export default function SelectNFT(): JSX.Element {
   const DISABLED_GRADIENT =
     "linear-gradient(180deg, rgba(34,24,32,1) 0%, rgba(21,14,20,1) 100%)";
 
-  function toggle(key: string) {
-    setSelected((s) => ({ ...s, [key]: !s[key] }));
-  }
-
-  // group by collection
   const byCollection = useMemo(() => {
     const map = new Map<string, NFTItem[]>();
     for (const it of nfts) {
@@ -81,7 +74,7 @@ export default function SelectNFT(): JSX.Element {
         </div>
       </div>
 
-      {/* Header selection pill */}
+      {/* Header selection pill (top CTA replaced with a grayed-out "SELECT YOUR NFT") */}
       <section style={{ padding: "24px 16px 0" }}>
         <div style={{ maxWidth: 980, margin: "0 auto" }}>
           <div
@@ -96,7 +89,6 @@ export default function SelectNFT(): JSX.Element {
               {selectedCount} NFT(s) Selected.
             </div>
 
-            {/* Grayed-out until at least one NFT is selected */}
             <button
               disabled={selectedCount === 0}
               className={selectedCount === 0 ? "" : "cta-primary"}
@@ -127,7 +119,9 @@ export default function SelectNFT(): JSX.Element {
             </button>
 
             <div style={{ marginTop: 12, color: "rgba(255,255,255,0.6)", fontSize: 12 }}>
-              Browsing wallet: <span style={{ fontFamily: "monospace" }}>{owner ?? "(unsupported input — use 0x address)"}</span>
+              Browsing wallet: <span style={{ fontFamily: "monospace" }}>
+                {owner ?? "(unsupported input — use 0x address)"}
+              </span>
             </div>
           </div>
         </div>
@@ -181,7 +175,9 @@ export default function SelectNFT(): JSX.Element {
                         return (
                           <button
                             key={key}
-                            onClick={() => setSelected((s) => ({ ...s, [key]: !s[key] }))}
+                            onClick={() =>
+                              setSelected((s) => ({ ...s, [key]: !s[key] }))
+                            }
                             style={{
                               textAlign: "left",
                               background: "rgba(0,0,0,0.25)",
