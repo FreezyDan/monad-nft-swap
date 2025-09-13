@@ -1,36 +1,18 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
-import "@nomicfoundation/hardhat-verify";
+import * as dotenv from "dotenv";
+dotenv.config();
+
+const { MONAD_RPC, PRIVATE_KEY } = process.env;
 
 const config: HardhatUserConfig = {
-  solidity: {
-    version: "0.8.24",
-    settings: {
-      metadata: {
-        bytecodeHash: "none",
-        useLiteralContent: true,
-      },
-    },
-  },
+  solidity: "0.8.24",
   networks: {
-    // keep both names so your old commands still work
-    monad: {
-      url: "https://testnet-rpc.monad.xyz",
-      chainId: 10143,
-    },
     monadTestnet: {
-      url: "https://testnet-rpc.monad.xyz",
-      chainId: 10143,
+      url: MONAD_RPC || "https://testnet-rpc.monad.xyz",
+      accounts: PRIVATE_KEY ? [PRIVATE_KEY] : [],
+      // chainId:  (optional; leave unset if unsure)
     },
-  },
-  sourcify: {
-    enabled: true,
-    apiUrl: "https://sourcify-api-monad.blockvision.org",
-    browserUrl: "https://testnet.monadexplorer.com",
-  },
-  etherscan: {
-    enabled: false,
   },
 };
-
 export default config;

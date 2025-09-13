@@ -1,0 +1,25 @@
+{
+  "name": "monad-nft-swap-contracts",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Smart contracts for NFT↔NFT swap on Monad testnet (0.1 MON fee).",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "compile": "hardhat compile",
+    "clean": "hardhat clean",
+    "test": "hardhat test",
+    "deploy:test": "hardhat run --network monadTestnet scripts/deploy.ts"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/contracts": "^5.0.2",
+    "dotenv": "^16.4.5",
+    "hardhat": "^3.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.0"
+  }
+}
